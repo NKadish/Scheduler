@@ -10,6 +10,19 @@ import DayListItem from "components/DayListItem";
 import DayList from "components/DayList";
 import InterviewerListItem from "components/InterviewerListItem";
 import InterviewerList from "components/InterviewerList";
+import Appointment from "components/Appoinment/index";
+import Header from "components/Appoinment/Header";
+import Empty from "compenents/Appoinment/Empty";
+
+storiesOf("Appointment", module)
+  .addParameters({
+    backgrounds: [{ name: "white", value: "#fff", default: true }]
+  })
+  .add("Appointment", () => <Appointment />)
+  .add("Appointment with Time", () => <Appointment time="12pm" />)
+  .add("Header", () => <Header time="12pm" />)
+  .add("Empty", () => <Empty onAdd={action("onAdd")} />);
+
 
 const interviewers = [
   { id: 1, name: "Sylvia Palmer", avatar: "https://i.imgur.com/LpaY82x.png" },
@@ -67,7 +80,7 @@ storiesOf("InterviewerListItem", module)
       id={interviewer.id}
       name={interviewer.name}
       avatar={interviewer.avatar}
-      setInterviewer={action("setInterviewer")}
+      setInterviewer={event => action("setInterviewer")(interviewer.id)}
     />
   ));
 
