@@ -12,7 +12,9 @@ import InterviewerListItem from "components/InterviewerListItem";
 import InterviewerList from "components/InterviewerList";
 import Appointment from "components/Appoinment/index";
 import Header from "components/Appoinment/Header";
-import Empty from "compenents/Appoinment/Empty";
+import Empty from "components/Appoinment/Empty";
+import Show from "components/Appoinment/Show";
+import Confirm from "components/Appoinment/Confirm";
 
 storiesOf("Appointment", module)
   .addParameters({
@@ -21,7 +23,22 @@ storiesOf("Appointment", module)
   .add("Appointment", () => <Appointment />)
   .add("Appointment with Time", () => <Appointment time="12pm" />)
   .add("Header", () => <Header time="12pm" />)
-  .add("Empty", () => <Empty onAdd={action("onAdd")} />);
+  .add("Empty", () => <Empty onAdd={action("onAdd")} />)
+  .add("Show", () => (
+    <Show
+      student="Lydia Miller-Jones"
+      interviewer={interviewers[0]}
+      onEdit={action("onEdit")}
+      onDelete={action("onDelete")}
+    />
+  ))
+  .add("Confirm", () => (
+    <Confirm
+      message="Delete the appointment?"
+      onConfirm={action("onConfirm")}
+      onCancel={action("onCancel")}
+    />
+  ));
 
 
 const interviewers = [

@@ -1,5 +1,5 @@
 import React from "react";
-import "/components/Appoinment/styles.css";
+import "components/Appoinment/styles.scss";
 
 export default function Appoinment(props) {
 
