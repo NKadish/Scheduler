@@ -15,6 +15,10 @@ import Header from "components/Appoinment/Header";
 import Empty from "components/Appoinment/Empty";
 import Show from "components/Appoinment/Show";
 import Confirm from "components/Appoinment/Confirm";
+import Status from "components/Appoinment/Status";
+import Error from "components/Appoinment/Error";
+import Form from "components/Appoinment/Form"
+
 
 storiesOf("Appointment", module)
   .addParameters({
@@ -38,8 +42,30 @@ storiesOf("Appointment", module)
       onConfirm={action("onConfirm")}
       onCancel={action("onCancel")}
     />
-  ));
-
+  ))
+  .add("Status", () => <Status message="Deleting"/>)
+  .add("Error", () => (
+    <Error
+      message="Could not delete appointment"
+      onClose={action("onClose")}
+    />
+  ))
+  .add("Edit", () => (
+    <Form
+      name="Noah"
+      interviewers={interviewers}
+      interviewer={4}
+      onSave={action("onSave")}
+      onCancel={action("onCancel")}
+    />
+  ))
+  .add("Create", () => (
+    <Form
+      interviewers={interviewers}
+      onSave={action("onSave")}
+      onCancel={action("onCancel")}
+    />
+  ))
 
 const interviewers = [
   { id: 1, name: "Sylvia Palmer", avatar: "https://i.imgur.com/LpaY82x.png" },
@@ -56,14 +82,14 @@ storiesOf("InterviewerList", module)
   .add("Initial", () => (
     <InterviewerList
       interviewers={interviewers}
-      setInterviewer={action("setInterviewer")}
+      onChange={action("setInterviewer")}
     />
   ))
   .add("Preselected", () => (
     <InterviewerList
       interviewers={interviewers}
-      interviewer={3}
-      setInterviewer={action("setInterviewer")}
+      value={3}
+      onChange={action("setInterviewer")}
     />
   ));
 
