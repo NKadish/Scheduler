@@ -3,8 +3,10 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appoinment";
+import { getAppointmentsForDay } from "../helpers/selectors";
 
-const appointments = [
+
+/* const appointments = [
   {
     id: 1,
     time: "12pm",
@@ -61,22 +63,35 @@ const appointments = [
     id: 'last',
     time: "5pm",
   },
-];
+]; */
 
 export default function Application(props) {
 
-  const [ day, setDay ] = useState("Monday");
-  const [ days, setDays ] = useState([]);
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    // you may put the line below, but will have to remove/comment hardcoded appointments variable
+    appointments: {}
+  });
 
-  const appointmentsList = appointments.map(appointment => {
+  const dailyAppointments= getAppointmentsForDay(state, state.day);
+
+  const setDay = day => setState({ ...state, day });
+
+  const appointmentsList = dailyAppointments.map(appointment => {
     return(
       <Appointment key={appointment.id} {...appointment} />
     )
   });
+
   useEffect(() => {
-    const url = `http://localhost:8001/api/days`
-    axios.get(url).then(response => {
-      setDays([...response.data])
+    const urlOne = `http://localhost:8001/api/days`
+    const urlTwo = `http://localhost:8001/api/appointments`
+    Promise.all([
+      axios.get(urlOne),
+      axios.get(urlTwo)
+    ]).then((all) => {
+      setState(prev => ({...prev, days: all[0].data, appointments: all[1].data }));
     })
   }, [])
 
@@ -91,8 +106,8 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
         <DayList
-          days={days}
-          day={day}
+          days={state.days}
+          day={state.day}
           setDay={setDay}
         />
         </nav>
@@ -104,6 +119,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {appointmentsList}
+        <Appointment id="last" time="5pm" />
       </section>
     </main>
   );
