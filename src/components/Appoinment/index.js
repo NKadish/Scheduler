@@ -4,11 +4,15 @@ import Header from "components/Appoinment/Header";
 import Show from "components/Appoinment/Show";
 import Empty from "components/Appoinment/Empty";
 import useVisualMode from "hooks/useVisualMode";
-import Form from "components/Appoinment/Form"
+import Form from "components/Appoinment/Form";
+import Status from "components/Appoinment/Status";
+import Confirm from "components/Appoinment/Confirm";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
+const SAVING = "SAVING";
+const CONFIRM = "CONFIRM";
 
 export default function Appoinment(props) {
 
@@ -21,10 +25,17 @@ export default function Appoinment(props) {
       student: name,
       interviewer
     };
-    props.bookInterview(props.id, interview);
-    transition(SHOW);
-    console.log("hello world")
-    console.log(interview);
+    transition(SAVING);
+    props.bookInterview(props.id, interview).then(() => transition(SHOW));
+  }
+
+  function deleteAppointment() {
+    transition(SAVING);
+    props.deleteInterview(props.id).then(() => transition(EMPTY));
+  }
+
+  function confirm() {
+    transition(CONFIRM);
   }
 
    return (
@@ -36,11 +47,14 @@ export default function Appoinment(props) {
           <Show
             student={props.interview.student}
             interviewer={props.interview.interviewer}
+            onDelete={confirm}
           />
         )}
         {mode === CREATE && 
-          <Form interviewers={props.interviewers} onCancel={back} onSave={save} bookInterview={props.bookInterview}/>
+          <Form interviewers={props.interviewers} onCancel={back} onSave={save} bookInterview={props.bookInterview} deleteInterview={props.deleteInterview}/>
         }
+        {mode === SAVING && <Status message={'Saving'}/>}
+        {mode === CONFIRM && <Confirm message={'Are you sure?'} onCancel={back} onConfirm={deleteAppointment}/>}
       </article>
 
    );
