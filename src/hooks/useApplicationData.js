@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { getAppointmentsForDay } from "helpers/selectors";
 
 export default function useApplicationData() {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    // you may put the line below, but will have to remove/comment hardcoded appointments variable
     appointments: {},
     interviewers: {}
   });
@@ -27,14 +27,19 @@ export default function useApplicationData() {
       const url = `http://localhost:8001/api/appointments/${id}`
       return axios.put(url, appointments[id])
       .then(response => {
-        setState({ ...state, appointments });
+        setState({ ...state, appointments });;
+
+        console.log(appointments)
+        console.log(state);
       })
+
+      
   }
 
   function deleteInterview (id) {
     const appointment = {
       ...state.appointments[id],
-      interview: { ...null }
+      interview: null 
     };
 
     const appointments = {
@@ -61,6 +66,21 @@ export default function useApplicationData() {
       setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data}));
     })
   }, [])
+
+  useEffect(() => {
+    let listOfAppointments = getAppointmentsForDay(state, state.day);
+    let numOfSpots = listOfAppointments.filter(appointment => !appointment.interview).length;
+    let listOfDays = state.days.map(day => {
+      if (day.name === state.day) {
+        day.spots = numOfSpots;
+      }
+      return day;
+    })
+    setState(prev => ({...prev,
+      days: listOfDays
+    }))
+  }, [state.appointments])
+
 
   return {state, setDay, bookInterview, deleteInterview};
 }
