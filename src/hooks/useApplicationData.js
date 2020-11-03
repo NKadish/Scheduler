@@ -27,10 +27,7 @@ export default function useApplicationData() {
       const url = `http://localhost:8001/api/appointments/${id}`
       return axios.put(url, appointments[id])
       .then(response => {
-        setState({ ...state, appointments });;
-
-        console.log(appointments)
-        console.log(state);
+        setState({ ...state, appointments });
       })
 
       
