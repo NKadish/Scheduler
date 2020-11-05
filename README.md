@@ -6,9 +6,9 @@ The app uses react for functionality and axios for interaction with the database
 
 ## Screenshots
 
-!["Menu Page"](https://github.com/NKadish/midterm-project/blob/master/docs/menu.png?raw=true)
-!["Orders Page"](https://github.com/NKadish/midterm-project/blob/master/docs/orders.png?raw=true)
-!["Checkout Page"](https://github.com/NKadish/midterm-project/blob/master/docs/checkout.png?raw=true)
+!["Default view"](https://github.com/NKadish/Scheduler/blob/master/docs/default-view.png?raw=true)
+!["New interview"](https://github.com/NKadish/Scheduler/blob/master/docs/new-interview.png?raw=true)
+!["Delete confirmation"](https://github.com/NKadish/Scheduler/blob/master/docs/delete-confirmation.png?raw=true)
 
 ## Dependencies
 
